@@ -160,8 +160,8 @@ jobs:
           files: |
             android-apk/*.apk
             windows/*.zip
-            linux/*.tar.gz
-            macos/*.dmg
+            linux/*.zip
+            macos/*.zip
           generate_release_notes: true
           draft: false
           prerelease: false
