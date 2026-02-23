@@ -2,9 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'providers/app_provider.dart';
 import 'screens/home_screen.dart';
+import 'services/permission_service.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  final permissionService = PermissionService();
+  await permissionService.checkAndRequestPermissions();
+
   runApp(
     ChangeNotifierProvider(
       create: (_) => AppProvider(),

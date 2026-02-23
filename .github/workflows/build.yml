@@ -60,13 +60,13 @@ jobs:
       - name: Package Windows
         run: |
           cd build/windows/x64/runner/Release/
-          Compress-Archive -Path * -DestinationPath ../../../windows.zip
+          Compress-Archive -Path * -DestinationPath windows.zip
 
       - name: Upload Windows artifact
         uses: actions/upload-artifact@v4
         with:
           name: windows
-          path: build/windows/x64/windows.zip
+          path: build/windows/x64/runner/Release/windows.zip
 
   build-linux:
     name: Build Linux
@@ -92,10 +92,16 @@ jobs:
       - name: Build Linux
         run: flutter build linux --release
 
+      - name: Check Linux build directory
+        run: ls -la build/linux/x64/release/
+
       - name: Package Linux
         run: |
           cd build/linux/x64/release/
-          tar -czf ../linux.tar.gz bundle/
+          tar -czf linux.tar.gz bundle/
+
+      - name: Check packaged files
+        run: ls -la build/linux/x64/release/
 
       - name: Upload Linux artifact
         uses: actions/upload-artifact@v4
@@ -125,15 +131,14 @@ jobs:
       - name: Package macOS
         run: |
           cd build/macos/Build/Products/Release/
-          mkdir -p flblog.app/Contents/MacOS/
           cp -r flblog.app/ flblog/
-          hdiutil create -srcfolder flblog/ -volname flblog -ov -format UDZO ../macos.dmg
+          hdiutil create -srcfolder flblog/ -volname flblog -ov -format UDZO macos.dmg
 
       - name: Upload macOS artifact
         uses: actions/upload-artifact@v4
         with:
           name: macos
-          path: build/macos/Build/Products/macos.dmg
+          path: build/macos/Build/Products/Release/macos.dmg
 
   create-release:
     name: Create Release
